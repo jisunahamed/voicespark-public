@@ -1,0 +1,144 @@
+# ═══════════════════════════════════════════════════════════════════
+#  Voice Spark AI — Docker Compose
+#  Usage: docker compose up -d
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── PostgreSQL Database ─────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-voicespark}
+      POSTGRES_USER: ${POSTGRES_USER:-voicespark}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-use-a-strong-password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-voicespark} -d ${POSTGRES_DB:-voicespark}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - voicespark
+
+  # ── Redis (Celery Broker) ───────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - voicespark
+
+  # ── Django Backend ──────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: gunicorn
+    env_file: .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=blaze.settings
+    volumes:
+      - media-data:/app/media
+      - static-data:/app/staticfiles
+    shm_size: '256m'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - voicespark
+
+  # ── Celery Worker ───────────────────────────────────────────────
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery
+    env_file: .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=blaze.settings
+    volumes:
+      - media-data:/app/media
+    shm_size: '256m'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    networks:
+      - voicespark
+
+  # ── Vite React Frontend ────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_SERVER: ${VITE_BACKEND_SERVER:-http://localhost/}
+        VITE_SCRAPER_BACKEND_SERVER: ${VITE_SCRAPER_BACKEND_SERVER:-http://localhost/}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - voicespark
+
+  # ── Nginx Reverse Proxy ────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "${PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - voicespark
+
+# ── Volumes ───────────────────────────────────────────────────────
+volumes:
+  postgres-data:
+  redis-data:
+  media-data:
+  static-data:
+
+# ── Network ───────────────────────────────────────────────────────
+networks:
+  voicespark:
+    driver: bridge

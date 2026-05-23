@@ -1,0 +1,65 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+.venv
+venv
+.pytest_cache
+.coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Databases
+db.sqlite3
+celery_broker.sqlite3
+backend/db.sqlite3
+backend/celery_broker.sqlite3
+
+# Logs
+*.log
+*.err.log
+*.out.log
+
+# Archives
+*.tar.gz
+*.zip
+
+# Media (not needed in build)
+media/
+backend/media/
+
+# Build artifacts
+dist/
+frontend/dist/
+staticfiles/
+staticfiles_build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Deployment artifacts
+backend_deploy.tar.gz
+voicespark.zip
+Dashboard.png
+CursorPool_Client/

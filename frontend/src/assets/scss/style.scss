@@ -1,0 +1,392 @@
+// color variants
+// @import './_themes-vars.module.scss';
+@use './themes-vars.module' as *;
+// third-party
+@import 'react-perfect-scrollbar/dist/css/styles.css';
+// @use 'react-perfect-scrollbar/dist/css/styles.css';
+//-----------------------|| APEXCHART ||-----------------------//
+
+.apexcharts-legend-series .apexcharts-legend-marker {
+    margin-right: 8px;
+}
+
+//-----------------------|| PERFECT SCROLLBAR ||-----------------------//
+
+.scrollbar-container {
+    .ps__rail-y {
+        &:hover > .ps__thumb-y,
+        &:focus > .ps__thumb-y,
+        &.ps--clicking .ps__thumb-y {
+            background-color: $grey500;
+            width: 5px;
+        }
+    }
+    .ps__thumb-y {
+        background-color: $grey500;
+        border-radius: 6px;
+        width: 5px;
+        right: 0;
+    }
+}
+
+.scrollbar-container.ps,
+.scrollbar-container > .ps {
+    &.ps--active-y > .ps__rail-y {
+        width: 5px;
+        background-color: transparent !important;
+        z-index: 999;
+        &:hover,
+        &.ps--clicking {
+            width: 5px;
+            background-color: transparent;
+        }
+    }
+    &.ps--scrolling-y > .ps__rail-y,
+    &.ps--scrolling-x > .ps__rail-x {
+        opacity: 0.4;
+        background-color: transparent;
+    }
+}
+
+//-----------------------|| ANIMATION KEYFRAMES ||-----------------------//
+
+@keyframes wings {
+    50% {
+        transform: translateY(-40px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%,
+    20%,
+    53%,
+    to {
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        transform: translateZ(0);
+    }
+    40%,
+    43% {
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        transform: translate3d(0, -5px, 0);
+    }
+    70% {
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        transform: translate3d(0, -7px, 0);
+    }
+    80% {
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        transform: translateZ(0);
+    }
+    90% {
+        transform: translate3d(0, -2px, 0);
+    }
+}
+
+@keyframes slideY {
+    0%,
+    50%,
+    100% {
+        transform: translateY(0px);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    75% {
+        transform: translateY(10px);
+    }
+}
+
+@keyframes slideX {
+    0%,
+    50%,
+    100% {
+        transform: translateX(0px);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+// CRM refresh
+:root {
+    --crm-ink: #1f2328;
+    --crm-muted: #667085;
+    --crm-soft: #f7faf8;
+    --crm-panel: rgba(255, 255, 255, 0.76);
+    --crm-panel-solid: #fffefa;
+    --crm-line: rgba(17, 24, 39, 0.08);
+    --crm-accent: #a855f7;
+    --crm-accent-deep: #7e22ce;
+    --crm-mint: #dcefeb;
+    --crm-blush: #ffd8ea;
+    --crm-lavender: #ded2f0;
+    --crm-sun: #ffe7a3;
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+body {
+    background:
+        radial-gradient(circle at 86% 4%, rgba(168, 85, 247, 0.20), transparent 27%),
+        linear-gradient(135deg, #f8fbf7 0%, #f4efe5 52%, #eef8f5 100%);
+    color: var(--crm-ink);
+}
+
+.crm-refresh-shell {
+    color: var(--crm-ink);
+
+    .MuiTypography-root {
+        letter-spacing: 0 !important;
+    }
+
+    .MuiCard-root,
+    .MuiPaper-root:not(.MuiAppBar-root):not(.MuiDrawer-paper):not(.MuiMenu-paper):not(.MuiDialog-paper) {
+        border: 1px solid var(--crm-line) !important;
+        border-radius: 24px !important;
+        background: var(--crm-panel) !important;
+        box-shadow: 0 24px 70px rgba(31, 35, 40, 0.08) !important;
+        backdrop-filter: blur(14px);
+    }
+
+    .MuiCard-root:hover {
+        box-shadow: 0 28px 78px rgba(31, 35, 40, 0.12) !important;
+    }
+
+    .MuiButton-contained {
+        background: var(--crm-ink) !important;
+        color: #ffffff !important;
+        border-radius: 999px !important;
+        box-shadow: none !important;
+    }
+
+    .MuiButton-contained:hover {
+        background: #111418 !important;
+        box-shadow: 0 16px 34px rgba(17, 24, 39, 0.18) !important;
+    }
+
+    .MuiButton-outlined,
+    .MuiToggleButton-root {
+        border-color: rgba(17, 24, 39, 0.14) !important;
+        color: var(--crm-ink) !important;
+        background: rgba(255, 255, 255, 0.62) !important;
+        border-radius: 999px !important;
+        font-weight: 800 !important;
+        text-transform: none !important;
+    }
+
+    .MuiToggleButton-root.Mui-selected,
+    .MuiButton-outlined:hover {
+        background: #f3e8ff !important;
+        border-color: rgba(168, 85, 247, 0.35) !important;
+        color: var(--crm-ink) !important;
+    }
+
+    .MuiChip-root {
+        border-radius: 999px !important;
+        font-weight: 800 !important;
+    }
+
+    .MuiOutlinedInput-root,
+    .MuiInputBase-root {
+        border-radius: 18px !important;
+    }
+
+    .MuiOutlinedInput-notchedOutline {
+        border-color: rgba(17, 24, 39, 0.12) !important;
+    }
+
+    .MuiCircularProgress-root {
+        color: var(--crm-ink) !important;
+    }
+
+    .MuiSkeleton-root {
+        background-color: rgba(31, 35, 40, 0.08) !important;
+    }
+
+    .MuiDialog-paper,
+    .MuiMenu-paper {
+        border-radius: 24px !important;
+        border: 1px solid var(--crm-line) !important;
+        box-shadow: 0 28px 80px rgba(17, 24, 39, 0.18) !important;
+    }
+}
+
+.voice-auth-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(360px, 520px) minmax(0, 1fr);
+    background:
+        radial-gradient(circle at 82% 14%, rgba(168, 85, 247, 0.26), transparent 24%),
+        linear-gradient(135deg, #fbfaf6 0%, #f2ecfb 46%, #eef8f5 100%);
+    color: var(--crm-ink);
+}
+
+.voice-auth-panel {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+}
+
+.voice-auth-card {
+    width: 100%;
+    max-width: 430px;
+    border: 1px solid var(--crm-line);
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 34px 90px rgba(31, 35, 40, 0.12);
+    backdrop-filter: blur(18px);
+    padding: 34px;
+}
+
+.voice-auth-visual {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(31, 35, 40, 0.92), rgba(67, 56, 202, 0.82)),
+        radial-gradient(circle at 45% 45%, rgba(168, 85, 247, 0.42), transparent 34%);
+}
+
+.voice-orbit {
+    position: absolute;
+    width: 640px;
+    height: 640px;
+    right: -140px;
+    top: 70px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 20deg, rgba(168, 85, 247, 0.95) 0deg 1.2deg, transparent 1.2deg 7deg);
+    opacity: 0.68;
+}
+
+.voice-preview-card {
+    position: absolute;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 34px 90px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px);
+}
+
+.voice-preview-card-a {
+    top: 18%;
+    left: 14%;
+    padding: 28px;
+    width: 210px;
+}
+
+.voice-preview-card-b {
+    right: 12%;
+    bottom: 18%;
+    padding: 26px;
+    width: 310px;
+}
+
+.voice-meter {
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(31, 35, 40, 0.10);
+    margin: 18px 0 12px;
+    overflow: hidden;
+}
+
+.voice-meter span {
+    display: block;
+    height: 100%;
+    width: 72%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #a855f7, #7c3aed);
+}
+
+.voice-onboarding-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 88% 12%, rgba(168, 85, 247, 0.24), transparent 25%),
+        linear-gradient(135deg, #fbfaf6 0%, #f3edf9 52%, #eef8f5 100%) !important;
+    color: var(--crm-ink);
+}
+
+.voice-onboarding-page .MuiCard-root,
+.voice-onboarding-page .MuiPaper-root:not(.MuiMenu-paper):not(.MuiDialog-paper) {
+    border: 1px solid var(--crm-line) !important;
+    border-radius: 28px !important;
+    background: rgba(255, 255, 255, 0.80) !important;
+    box-shadow: 0 30px 88px rgba(31, 35, 40, 0.10) !important;
+    backdrop-filter: blur(16px);
+}
+
+.voice-onboarding-page .MuiButton-contained,
+.voice-auth-page .MuiButton-contained {
+    background: #1f2328 !important;
+    color: #fff !important;
+    border-radius: 999px !important;
+}
+
+.voice-onboarding-page .MuiButton-outlined,
+.voice-auth-page .MuiButton-outlined {
+    border-color: rgba(168, 85, 247, 0.34) !important;
+    color: #1f2328 !important;
+    background: rgba(255, 255, 255, 0.70) !important;
+    border-radius: 999px !important;
+}
+
+.voice-onboarding-page .MuiOutlinedInput-root,
+.voice-auth-page .MuiOutlinedInput-root {
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+}
+
+.voice-onboarding-page .MuiOutlinedInput-notchedOutline,
+.voice-auth-page .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(17, 24, 39, 0.12) !important;
+}
+
+@media (max-width: 900px) {
+    .voice-auth-page {
+        grid-template-columns: 1fr;
+    }
+    .voice-auth-visual {
+        display: none;
+    }
+    .voice-auth-panel {
+        padding: 24px;
+    }
+    .voice-auth-card {
+        padding: 26px;
+        border-radius: 26px;
+    }
+}
+
+.crm-refresh-shell main,
+.crm-refresh-shell [role='main'] {
+    scrollbar-color: rgba(31, 35, 40, 0.24) transparent;
+}
+
+@media (max-width: 959px) {
+    .crm-refresh-shell {
+        .MuiCard-root,
+        .MuiPaper-root:not(.MuiAppBar-root):not(.MuiDrawer-paper):not(.MuiMenu-paper):not(.MuiDialog-paper) {
+            border-radius: 20px !important;
+        }
+    }
+}
