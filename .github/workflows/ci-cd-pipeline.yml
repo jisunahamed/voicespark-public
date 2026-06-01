@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to dev branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull request to dev branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Checkout the code
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'  # Your Python version
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Runs only if the build job is successful
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Checkout the repo again for deployment
+
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.5.3  # Set up SSH agent with private key
+      with:
+        ssh-private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+
+    - name: Deploy application via SSH to server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.user }}@${{ secrets.server }} '
+          cd /home/blaze/voiceSpark/voicespark-public && \
+          git stash && \
+          git pull origin main && \
+          cd /home/blaze/voiceSpark/voicespark-public/backend && \
+          source /home/blaze/voiceSpark/voicespark-public/backend/venv/bin/activate && \
+          pip install -r requirements.txt && \
+          echo "${{ secrets.CICD_SYS_PASS }}" | sudo -S systemctl daemon-reload && \
+          echo "${{ secrets.CICD_SYS_PASS }}" | sudo -S systemctl restart voiceSparkGunicorn && \
+
+          celery -A voice_spark worker --loglevel=info -Q make_posts --autoscale=1,1 -n celery_server --detach && \
+          cd /home/blaze/voiceSpark/voicespark-public/frontend && \ 
+          npm run build 
+
+
+        '
