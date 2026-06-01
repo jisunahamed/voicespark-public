@@ -13,6 +13,37 @@ from utils.chatbot import gemini_error_payload
 logger = logging.getLogger(__name__)
 
 
+def competitor_discovery_context(profile):
+    analysis = profile.profile if isinstance(profile.profile, dict) else {}
+    context = dict(analysis)
+    placeholder_services = {'needs manual review', 'manual review', 'n/a', 'none'}
+    services = [
+        item for item in (
+            context.get('services') or profile.services or []
+        )
+        if str(item or '').strip().lower() not in placeholder_services
+    ]
+    if not services:
+        services = [
+            item for item in (
+                context.get('product_structure') or context.get('keywords') or profile.keywords or []
+            )
+            if str(item or '').strip()
+        ]
+    context['services'] = services or [profile.business_type or context.get('business_type') or 'business services']
+    context['name'] = context.get('name') or profile.business_name or profile.website_url or 'Business'
+    context['business_type'] = context.get('business_type') or profile.business_type or 'service business'
+    context['industry'] = context.get('industry') or profile.industry or context['business_type']
+    context['audience'] = context.get('audience') or profile.audience or ['target customers']
+    context['keywords'] = context.get('keywords') or profile.keywords or []
+    context['market_positioning'] = (
+        context.get('market_positioning')
+        or profile.positioning
+        or f"{context['name']} provides {', '.join(context['services'][:3])} for {', '.join(context['audience'][:2])}."
+    )
+    return context
+
+
 @shared_task(bind=True, name='content_engine.generate_campaign_plan_job')
 def generate_campaign_plan_job(self, plan_id):
     """Generate campaign weeks with the configured AI pipeline outside the request/response path."""
@@ -202,9 +233,7 @@ def run_workspace_intelligence_job(self, job_id):
             job.result = result if isinstance(result, dict) else {'result': result}
         elif job.job_type == 'competitor_discovery':
             from .views import upsert_competitor
-            brand_analysis = profile.profile if isinstance(profile.profile, dict) else {}
-            if not brand_analysis_is_ready(brand_analysis):
-                raise RuntimeError('Competitor discovery pending review because brand intelligence did not pass source validation.')
+            brand_analysis = competitor_discovery_context(profile)
             competitors = []
             try:
                 competitors = discover_competitors(brand_analysis)[:8]

@@ -1,8 +1,8 @@
 // api/workspaceApi.js
 import api from "../login_register/axios_client";
 
-const WORKSPACES_KEY       = 'blaze_workspaces';
-const ACTIVE_WORKSPACE_KEY = 'blaze_active_workspace_id';
+const WORKSPACES_KEY       = 'voice_spark_workspaces';
+const ACTIVE_WORKSPACE_KEY = 'voice_spark_active_workspace_id';
 
 // ── localStorage helpers ──────────────────────────────────────────────────────
 export const workspaceStorage = {

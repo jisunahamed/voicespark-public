@@ -45,7 +45,7 @@ echo "════════════════════════�
 # Determine what to run based on CMD argument
 if [ "$1" = "gunicorn" ] || [ -z "$1" ]; then
     echo "🚀 Starting Gunicorn on port 8000..."
-    exec gunicorn blaze.wsgi:application \
+    exec gunicorn voice_spark.wsgi:application \
         --bind 0.0.0.0:8000 \
         --workers "${GUNICORN_WORKERS:-3}" \
         --timeout "${GUNICORN_TIMEOUT:-120}" \
@@ -53,7 +53,7 @@ if [ "$1" = "gunicorn" ] || [ -z "$1" ]; then
         --error-logfile -
 elif [ "$1" = "celery" ]; then
     echo "🚀 Starting Celery worker (queues: celery, make_posts)..."
-    exec celery -A blaze worker \
+    exec celery -A voice_spark worker \
         -l info \
         -Q celery,make_posts \
         -c "${CELERY_CONCURRENCY:-2}" \

@@ -79,7 +79,7 @@ User=$APP_USER
 Group=$APP_USER
 WorkingDirectory=$APP_DIR/backend
 EnvironmentFile=$APP_DIR/backend/.env
-ExecStart=$APP_DIR/backend/.venv/bin/gunicorn blaze.wsgi:application --bind 127.0.0.1:$BACKEND_PORT --workers 3 --timeout 120
+ExecStart=$APP_DIR/backend/.venv/bin/gunicorn voice_spark.wsgi:application --bind 127.0.0.1:$BACKEND_PORT --workers 3 --timeout 120
 Restart=always
 
 [Install]
@@ -96,7 +96,7 @@ User=$APP_USER
 Group=$APP_USER
 WorkingDirectory=$APP_DIR/backend
 EnvironmentFile=$APP_DIR/backend/.env
-ExecStart=$APP_DIR/backend/.venv/bin/celery -A blaze worker -l info -Q celery,make_posts
+ExecStart=$APP_DIR/backend/.venv/bin/celery -A voice_spark worker -l info -Q celery,make_posts
 Restart=always
 
 [Install]

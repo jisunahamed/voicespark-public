@@ -704,7 +704,7 @@ function TopBar({ id, imageData }) {
             );
             const contentDisposition = response.headers["content-disposition"] || "";
             const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/i);
-            const filename = filenameMatch?.[1] || `blaze-design-${id}.png`;
+            const filename = filenameMatch?.[1] || `voice-spark-design-${id}.png`;
             const blob = new Blob([response.data], { type: response.headers["content-type"] || "image/png" });
             const objectUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
@@ -1369,7 +1369,7 @@ function RightPanel({ scheduleTime, setScheduleTime, id, imageData, x, fb, insta
         if (response.status === 200) {
             const nextId = response.data.nano_banana_id;
             if (nextId && nextId !== null) {
-                navigate('/blaze-editor/' + nextId);
+                navigate('/voice-spark-editor/' + nextId);
             }
         }
         setNavLoading(null);
@@ -1618,7 +1618,7 @@ function RightPanel({ scheduleTime, setScheduleTime, id, imageData, x, fb, insta
 }
 
 
-export default function BlazeEditor() {
+export default function VoiceSparkEditor() {
     const { id } = useParams();
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user') || '{}');

@@ -40,7 +40,7 @@ Run from repository root or `backend` as shown:
 ```bash
 python -m py_compile backend/content_engine/services/website.py backend/content_engine/services/intelligence.py backend/content_engine/views.py
 cd backend
-python -c "import os; os.environ.setdefault('DJANGO_SETTINGS_MODULE','blaze.settings'); import django; django.setup(); print('django imports ok')"
+python -c "import os; os.environ.setdefault('DJANGO_SETTINGS_MODULE','voice_spark.settings'); import django; django.setup(); print('django imports ok')"
 python manage.py check
 ```
 

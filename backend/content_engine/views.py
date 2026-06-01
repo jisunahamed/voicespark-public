@@ -1105,8 +1105,7 @@ class BusinessProfileView(APIView):
             def enqueue_intelligence():
                 try:
                     queue_workspace_intelligence_job(user, workspace, profile, 'brand_enrichment')
-                    if brand_analysis_is_ready(profile.profile):
-                        queue_workspace_intelligence_job(user, workspace, profile, 'competitor_discovery')
+                    queue_workspace_intelligence_job(user, workspace, profile, 'competitor_discovery')
                 except Exception as exc:
                     logger.exception('background intelligence enqueue failed workspace=%s: %s', workspace.id, exc)
                     SourceMatrixEntry.objects.filter(

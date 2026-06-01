@@ -1243,7 +1243,7 @@ function ActionButtons({ open, setOpen, selectedPosts, onRegenerate, onGeneratio
   const navigate = useNavigate();
   const [regenerating, setRegenerating] = useState(false);
   const [loading, setLoading] = useState(false);
-  const postIds = selectedPosts.map(p => p.replace('/blaze-editor/', ''));
+  const postIds = selectedPosts.map(p => p.replace('/voice-spark-editor/', ''));
   const user = JSON.parse(localStorage.getItem('user'));
   const workspaceId = workspaceStorage.getActiveId();
   const handleRegenerate = async () => {
@@ -1533,7 +1533,7 @@ export default function CalendarPage() {
   //     author: '',
   //     excerpt: '',
   //     connected: false,
-  //     path: `/blaze-editor/${item.nano_banana_id}`,
+  //     path: `/voice-spark-editor/${item.nano_banana_id}`,
   //   });
 
   //   return acc;
@@ -1562,7 +1562,7 @@ export default function CalendarPage() {
         approval: item.approval,
         scheduledAt: safeDate.toISOString(),
         connected: false,
-        path: `/blaze-editor/${item.nano_banana_id}`,
+        path: `/voice-spark-editor/${item.nano_banana_id}`,
       });
       return acc;
     }, {});

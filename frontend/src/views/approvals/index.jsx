@@ -67,7 +67,7 @@ function PostCard({ key, post }) {
   return (
     <Card
       elevation={0}
-      onClick={()=>{navigate("/blaze-editor/"+post.id)}}
+      onClick={()=>{navigate("/voice-spark-editor/"+post.id)}}
       sx={{
         border: isPosted ? "1.5px solid #22C55E" : "1px solid rgba(0,0,0,0.09)",
         borderRadius: 3,

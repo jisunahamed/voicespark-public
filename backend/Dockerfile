@@ -7,7 +7,7 @@ FROM python:3.12-slim AS backend
 # Prevent Python from writing .pyc files and enable unbuffered output
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=blaze.settings
+    DJANGO_SETTINGS_MODULE=voice_spark.settings
 
 WORKDIR /app
 

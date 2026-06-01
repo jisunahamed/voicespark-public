@@ -5,10 +5,10 @@ from django.conf import settings
 from dotenv import load_dotenv
 load_dotenv()
 # Set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blaze.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'voice_spark.settings')
 
 # Create a new Celery instance with the project name
-app = Celery('blaze')
+app = Celery('voice_spark')
 
 # Load configuration from Django settings with a 'CELERY_' prefix
 app.config_from_object('django.conf:settings', namespace='CELERY')

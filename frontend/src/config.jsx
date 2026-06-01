@@ -12,8 +12,8 @@ if (import.meta.env.VITE_SCRAPER_BACKEND_SERVER) {
 }
 
 const config = {
-    basename: '/Blaze',
-    defaultPath: '/Blaze',
+    basename: '/VoiceSpark',
+    defaultPath: '/VoiceSpark',
     fontFamily: `'Roboto', sans-serif`,
     borderRadius: 12,
     API_SERVER: BACKEND_SERVER,

@@ -1496,9 +1496,26 @@ Return JSON only:
 
 
 def discover_competitors(brand_analysis):
+    prompt = competitor_prompt_from_context(brand_analysis)
     try:
         payload = gemini_json(
-            competitor_prompt_from_context(brand_analysis),
+            prompt,
+            system_prompt=(
+                'You are a competitive intelligence analyst. Return strict JSON only. '
+                'Use well-known real competitors with real website URLs; never return placeholders.'
+            ),
+            google_search=False,
+            fallback={'competitors': []},
+        )
+    except Exception:
+        payload = {'competitors': []}
+    competitors = payload.get('competitors') if isinstance(payload, dict) else []
+    competitors = [item for item in competitors if isinstance(item, dict)]
+    if competitors:
+        return competitors
+    try:
+        payload = gemini_json(
+            prompt,
             system_prompt='You are a competitive intelligence analyst. Use current market knowledge and Google Search grounding when useful. Return strict JSON only.',
             google_search=True,
             fallback={'competitors': []},

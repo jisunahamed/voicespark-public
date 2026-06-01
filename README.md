@@ -161,7 +161,7 @@ voicespark-public/
 ├── backend/                    # 🐍 Django 6.0 API
 │   ├── Dockerfile
 │   ├── docker-entrypoint.sh    # Migrate → cache → static → start
-│   ├── blaze/                  # Django project settings + WSGI
+│   ├── voice_spark/                  # Django project settings + WSGI
 │   ├── auth_user/              # JWT authentication
 │   ├── content_engine/         # Website crawling + AI analysis
 │   ├── nano_banana/            # Image generation + content posts

@@ -2809,7 +2809,7 @@ class DownloadGeneratedImage(APIView):
         if not extension:
             extension = '.png'
 
-        filename = f'blaze-design-{nano_banana.id}{extension}'
+        filename = f'voice-spark-design-{nano_banana.id}{extension}'
         response = HttpResponse(image_response.content, content_type=content_type)
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         response['Content-Length'] = str(len(image_response.content))

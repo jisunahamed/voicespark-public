@@ -36,7 +36,7 @@ const InsightsPage = lazy(() => import('./views/insights'));
 const ConnectAccountsPage = lazy(() => import('./views/connect_accounts'));
 const LoginPage = lazy(() => import('./views/login_register/login'));
 const RegisterPage = lazy(() => import('./views/login_register/register'));
-const BlazeEditor = lazy(() => import('./views/calendar/blaze_editor'));
+const VoiceSparkEditor = lazy(() => import('./views/calendar/voice_spark_editor'));
 const BusinessProfileBuilder = lazy(() => import('./views/login_register/profile_setup'));
 const RecommendedVisualStyle = lazy(() => import('./views/login_register/recommended_visual_style'));
 const BrandFontPage = lazy(() => import('./views/login_register/brand_font'));
@@ -193,7 +193,7 @@ function AppShell() {
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<Navigate to="/home" replace />} />
-            <Route path="/Blaze" element={<Navigate to="/home" replace />} />
+            <Route path="/VoiceSpark" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/integrations" element={<ConnectAccountsPage />} />
@@ -245,7 +245,7 @@ function App() {
 
               <Route element={<PrivateRoute />}>
                 <Route path="/workspace" element={<Workspace />} />
-                <Route path="/blaze-editor/:id" element={<BlazeEditor />} />
+                <Route path="/voice-spark-editor/:id" element={<VoiceSparkEditor />} />
 
                 {/* Shell routes — with sidebar/topbar */}
                 <Route path="/*" element={<AppShell />} />
