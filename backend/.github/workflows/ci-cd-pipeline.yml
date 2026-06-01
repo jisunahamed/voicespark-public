@@ -43,9 +43,9 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
 
-    - name: Deploy application via SSH to 77.42.25.158
+    - name: Deploy application via SSH to 
       run: |
-        ssh -o StrictHostKeyChecking=no blaze@77.42.25.158 '
+        ssh -o StrictHostKeyChecking=no  '
           cd /home/blaze/Blaze/BlazeBackend && \
           git stash && \
           git pull origin main && \
