@@ -37,6 +37,7 @@ from fb_auth.models import FacebookPage, FacebookToken, InstagramToken
 from linkedin_auth.models import LinkedinToken
 from x_auth.models import Auth1Xtoken, XToken
 from utils.chatbot import ChatGPT
+from utils.public_urls import public_media_url
 
 DEFAULT_BRAND_STYLE = {
     "logos": [],
@@ -832,11 +833,7 @@ class UploadBrandStyleLogo(APIView):
         if not user_profile:
             return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
         instance = UploadImages.objects.create(user=user, image=image, workspace=workspace)
-        url = instance.image.url.split('?')[0]
-        if url and str(url).startswith('/media/'):
-            import os
-            backend_url = os.getenv('BACKEND_URL', 'https://134-209-146-170.sslip.io')
-            url = f"{backend_url.rstrip('/')}{url}"
+        url = public_media_url(instance.image.url.split('?')[0])
         brand_style = get_brand_style(user_profile)
         brand_style['logos'] = brand_style.get('logos', []) + [{'url': url, 'source': 'upload'}]
         return JsonResponse({'data': save_brand_style(user_profile, brand_style), 'url': url})

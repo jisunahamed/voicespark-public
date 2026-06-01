@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv(
         'ALLOWED_HOSTS',
-        'voice-spark-backend-six.vercel.app,localhost,127.0.0.1,77.42.25.158,voice-spark.duckdns.org'
+        'api.voicespark.ai,voicespark.ai,www.voicespark.ai,134-209-146-170.sslip.io,134.209.146.170,voice-spark-backend-six.vercel.app,localhost,127.0.0.1,77.42.25.158,voice-spark.duckdns.org'
     ).split(',')
     if host.strip()
 ]
@@ -79,10 +79,21 @@ CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
         'CORS_ALLOWED_ORIGINS',
-        'http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://127.0.0.1:3000,https://voice-spark-mauve.vercel.app,https://frontend-xi-one-8hr5rqjb64.vercel.app'
+        'https://voicespark.ai,https://www.voicespark.ai,https://api.voicespark.ai,https://134-209-146-170.sslip.io,http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://127.0.0.1:3000,https://voice-spark-mauve.vercel.app,https://frontend-xi-one-8hr5rqjb64.vercel.app'
     ).split(',')
     if origin.strip()
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        'CSRF_TRUSTED_ORIGINS',
+        'https://voicespark.ai,https://www.voicespark.ai,https://api.voicespark.ai,https://134-209-146-170.sslip.io'
+    ).split(',')
+    if origin.strip()
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://frontend-[a-z0-9-]+\.vercel\.app$",

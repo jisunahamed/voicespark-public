@@ -36,6 +36,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from rest_framework import status
 from utils.automation import analyse_link
+from utils.public_urls import public_media_url
 
 logger = logging.getLogger(__name__)
 from datetime import datetime, timedelta, timezone
@@ -717,13 +718,7 @@ def serialize_nano_banana(nano_banana, scheduled_post=None):
         if key in PLATFORM_CAPTION_KEYS and captions.get(key)
     ]
     
-    imageurl = nano_banana.picture_url
-    if imageurl and str(imageurl).startswith('/media/'):
-        # On VPS, it serves media under /media/.
-        # We prepend a default if BACKEND_URL is set, else we use the VPS domain.
-        import os
-        backend_url = os.getenv('BACKEND_URL', 'https://134-209-146-170.sslip.io')
-        imageurl = f"{backend_url.rstrip('/')}{imageurl}"
+    imageurl = public_media_url(nano_banana.picture_url)
         
     return {
         "nano_banana_id": str(nano_banana.id),

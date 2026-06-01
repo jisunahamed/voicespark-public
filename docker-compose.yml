@@ -123,6 +123,8 @@ services:
       - "${PORT:-80}:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - media-data:/app/media:ro
+      - static-data:/app/staticfiles:ro
     depends_on:
       backend:
         condition: service_healthy

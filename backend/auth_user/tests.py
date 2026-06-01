@@ -282,15 +282,20 @@ class PublishingSchedulingTests(TestCase):
         self.assertEqual(merged, {'facebook': {'platform': 'facebook', 'status': 201}})
 
     def test_facebook_media_url_converts_relative_media_path(self):
-        self.assertEqual(
-            public_media_url('/media/generated/image.jpg'),
-            'https://134-209-146-170.sslip.io/media/generated/image.jpg',
-        )
-        self.assertEqual(
-            public_media_url('https://cdn.example.com/image.jpg'),
-            'https://cdn.example.com/image.jpg',
-        )
-        self.assertEqual(
-            shared_public_media_url('/media/generated/image.jpg'),
-            'https://134-209-146-170.sslip.io/media/generated/image.jpg',
-        )
+        with patch.dict('os.environ', {'BACKEND_URL': '', 'PUBLIC_BACKEND_URL': ''}):
+            self.assertEqual(
+                public_media_url('/media/generated/image.jpg'),
+                'https://api.voicespark.ai/media/generated/image.jpg',
+            )
+            self.assertEqual(
+                public_media_url('https://cdn.example.com/image.jpg'),
+                'https://cdn.example.com/image.jpg',
+            )
+            self.assertEqual(
+                shared_public_media_url('/media/generated/image.jpg'),
+                'https://api.voicespark.ai/media/generated/image.jpg',
+            )
+            self.assertEqual(
+                shared_public_media_url('https://134-209-146-170.sslip.io/media/generated/image.jpg'),
+                'https://api.voicespark.ai/media/generated/image.jpg',
+            )

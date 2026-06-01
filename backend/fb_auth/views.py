@@ -28,6 +28,7 @@ from workspace.models import Workspace
 from x_auth.models import XToken
 from linkedin_auth.models import LinkedinToken
 from .models import FacebookUser, FacebookToken, InstagramUser, InstagramToken, FacebookPage
+from utils.public_urls import public_media_url as shared_public_media_url
 
 logger = logging.getLogger(__name__)
 
@@ -137,22 +138,7 @@ INSTAGRAM_CONFIG_ID = os.getenv("INSTAGRAM_CONFIG_ID")
 
 
 def public_media_url(value, request=None):
-    if not value:
-        return ''
-    url = str(value).strip()
-    parsed = urlparse(url)
-    if parsed.scheme in ('http', 'https'):
-        return url
-    if url.startswith('//'):
-        return f'https:{url}'
-    if not url.startswith('/'):
-        url = f'/media/{url.lstrip("/")}'
-    backend_url = (
-        os.getenv('BACKEND_URL')
-        or os.getenv('PUBLIC_BACKEND_URL')
-        or 'https://134-209-146-170.sslip.io'
-    )
-    return f'{backend_url.rstrip("/")}/{url.lstrip("/")}'
+    return shared_public_media_url(value)
 
 
 def with_optional_config_id(params, config_id):
