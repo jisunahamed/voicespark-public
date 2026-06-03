@@ -2,8 +2,8 @@
 
 This repository is deployed as two services:
 
-- Frontend: Vercel project `frontend`, production alias `https://frontend-xi-one-8hr5rqjb64.vercel.app`
-- Backend: existing VPS app at `/opt/voice-spark-ai/backend`, public URL `https://134-209-146-170.sslip.io`
+- Frontend: production app at `https://voicespark.ai`
+- Backend/API: existing VPS app at `/opt/voice-spark-ai/backend`, public URL `https://api.voicespark.ai`
 
 ## Source Of Truth
 

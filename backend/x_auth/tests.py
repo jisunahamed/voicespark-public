@@ -40,7 +40,7 @@ class XOAuthTests(TestCase):
         session.authorization_url.return_value = 'https://api.x.com/oauth/authorize?oauth_token=request-token'
         with patch('x_auth.views.X_API_KEY', 'consumer-key'), \
              patch('x_auth.views.X_API_SECRET', 'consumer-secret'), \
-             patch('x_auth.views.X_REDIRECT_URI', 'https://134-209-146-170.sslip.io/auth/x/callback/'), \
+             patch('x_auth.views.X_REDIRECT_URI', 'https://api.voicespark.ai/auth/x/callback/'), \
              patch('x_auth.views.OAuth1Session', return_value=session):
             response = XLoginView.as_view()(request)
 
@@ -59,7 +59,7 @@ class XOAuthTests(TestCase):
 
         with patch('x_auth.views.X_API_KEY', 'consumer-key'), \
              patch('x_auth.views.X_API_SECRET', 'consumer-secret'), \
-             patch('x_auth.views.X_REDIRECT_URI', 'https://134-209-146-170.sslip.io/auth/x/callback/'):
+             patch('x_auth.views.X_REDIRECT_URI', 'https://api.voicespark.ai/auth/x/callback/'):
             response = XLoginView.as_view()(request)
 
         self.assertEqual(response.status_code, 400)
@@ -73,7 +73,7 @@ class XOAuthTests(TestCase):
 
         with patch('x_auth.views.X_API_KEY', 'consumer-key'), \
              patch('x_auth.views.X_API_SECRET', 'consumer-secret'), \
-             patch('x_auth.views.X_REDIRECT_URI', 'https://134-209-146-170.sslip.io/auth/x/callback/'):
+             patch('x_auth.views.X_REDIRECT_URI', 'https://api.voicespark.ai/auth/x/callback/'):
             response = XLoginView.as_view()(request)
 
         self.assertEqual(response.status_code, 400)

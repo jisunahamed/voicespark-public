@@ -129,10 +129,15 @@ META_AUTH_URL  = "https://www.facebook.com/v19.0/dialog/oauth"
 META_TOKEN_URL = "https://graph.facebook.com/v19.0/oauth/access_token"
 META_USER_URL  = "https://graph.facebook.com/v19.0/me"
 load_dotenv()
+DEFAULT_BACKEND_URL = (
+    os.getenv("PUBLIC_BACKEND_URL")
+    or os.getenv("BACKEND_URL")
+    or "https://api.voicespark.ai"
+).rstrip("/")
 META_APP_ID = os.getenv("META_APP_ID")
 META_APP_SECRET = os.getenv("META_APP_SECRET")
-META_REDIRECT_URI = os.getenv("META_REDIRECT_URI")
-INSTAGRAM_REDIRECT_URI = os.getenv("INSTAGRAM_REDIRECT_URI", META_REDIRECT_URI)
+META_REDIRECT_URI = os.getenv("META_REDIRECT_URI") or f"{DEFAULT_BACKEND_URL}/auth/fb/callback/"
+INSTAGRAM_REDIRECT_URI = os.getenv("INSTAGRAM_REDIRECT_URI") or f"{DEFAULT_BACKEND_URL}/auth/fb/instagram/callback/"
 FACEBOOK_CONFIG_ID = os.getenv("FACEBOOK_CONFIG_ID")
 INSTAGRAM_CONFIG_ID = os.getenv("INSTAGRAM_CONFIG_ID")
 
@@ -216,7 +221,7 @@ class MetaLogin(APIView):
         elif platform == 'instagram':
             params = with_optional_config_id({
                 'client_id':     META_APP_ID,
-                'redirect_uri':  META_REDIRECT_URI,
+                'redirect_uri':  INSTAGRAM_REDIRECT_URI,
                 'scope':         'email,public_profile,pages_show_list,pages_read_engagement,instagram_manage_insights,instagram_content_publish',
                 'response_type': 'code',
                 'state':         state,
@@ -279,6 +284,8 @@ class MetaCallback(APIView):
         code  = request.GET.get('code')
         state = request.GET.get('state')
         state_data = decode_state(state) if state else {}
+        platform = state_data.get('platform', 'facebook')
+        redirect_uri = INSTAGRAM_REDIRECT_URI if platform == 'instagram' else META_REDIRECT_URI
 
         if not code:
             return popup_response('Missing code parameter.', status_code=status.HTTP_400_BAD_REQUEST)
@@ -295,7 +302,7 @@ class MetaCallback(APIView):
             token_resp = requests.get(META_TOKEN_URL, params={
                 'client_id':     META_APP_ID,
                 'client_secret': META_APP_SECRET,
-                'redirect_uri':  META_REDIRECT_URI,
+                'redirect_uri':  redirect_uri,
                 'code':          code,
             }, timeout=10)
             token_resp.raise_for_status()

@@ -32,7 +32,12 @@ load_dotenv()
 
 LINKEDIN_CLIENT_ID = os.getenv("LINKEDIN_CLIENT_ID")
 LINKEDIN_CLIENT_SECRET = os.getenv("LINKEDIN_CLIENT_SECRET")
-LINKEDIN_REDIRECT_URI = os.getenv("LINKEDIN_REDIRECT_URI")
+DEFAULT_BACKEND_URL = (
+    os.getenv("PUBLIC_BACKEND_URL")
+    or os.getenv("BACKEND_URL")
+    or "https://api.voicespark.ai"
+).rstrip("/")
+LINKEDIN_REDIRECT_URI = os.getenv("LINKEDIN_REDIRECT_URI") or f"{DEFAULT_BACKEND_URL}/auth/linkedin/callback/"
 
 LINKEDIN_AUTH_URL = "https://www.linkedin.com/oauth/v2/authorization"
 LINKEDIN_TOKEN_URL = "https://www.linkedin.com/oauth/v2/accessToken"

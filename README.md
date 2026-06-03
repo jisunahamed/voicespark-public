@@ -207,8 +207,8 @@ Create a Meta App at [developers.facebook.com](https://developers.facebook.com):
 ```env
 META_APP_ID=your-meta-app-id
 META_APP_SECRET=your-meta-app-secret
-META_REDIRECT_URI=http://localhost/auth/fb/callback
-INSTAGRAM_REDIRECT_URI=http://localhost/auth/fb/callback
+META_REDIRECT_URI=https://api.voicespark.ai/auth/fb/callback/
+INSTAGRAM_REDIRECT_URI=https://api.voicespark.ai/auth/fb/instagram/callback/
 FACEBOOK_CONFIG_ID=your-facebook-login-config-id
 INSTAGRAM_CONFIG_ID=your-instagram-login-config-id
 ```
@@ -225,7 +225,7 @@ Create an app at [linkedin.com/developers](https://www.linkedin.com/developers/)
 ```env
 LINKEDIN_CLIENT_ID=your-linkedin-client-id
 LINKEDIN_CLIENT_SECRET=your-linkedin-client-secret
-LINKEDIN_REDIRECT_URI=http://localhost/auth/linkedin/callback/
+LINKEDIN_REDIRECT_URI=https://api.voicespark.ai/auth/linkedin/callback/
 ```
 
 Required products: Sign In with LinkedIn, Share on LinkedIn, Marketing Developer Platform (for org posts)
@@ -241,12 +241,12 @@ Create a project at [developer.x.com](https://developer.x.com):
 # OAuth 2.0
 X_CLIENT_ID=your-x-client-id
 X_CLIENT_SECRET=your-x-client-secret
-X_REDIRECT_URI=http://localhost/auth/x/callback/
+X_REDIRECT_URI=https://api.voicespark.ai/auth/x/callback/
 
 # OAuth 1.0a (required for media uploads)
 X_CONSUMER_KEY=your-consumer-key
 X_CONSUMER_SECRET=your-consumer-secret
-X_OAUTH1_CALLBACK=http://localhost/auth/x/callback/
+X_OAUTH1_CALLBACK=https://api.voicespark.ai/auth/x/callback/
 ```
 
 App permissions required: Read and Write
@@ -456,11 +456,12 @@ docker compose up -d --build frontend
 
 Redirect URIs in `.env` must **exactly match** what's configured in each platform's developer console:
 ```env
-META_REDIRECT_URI=http://localhost/auth/fb/callback
-LINKEDIN_REDIRECT_URI=http://localhost/auth/linkedin/callback/
-X_REDIRECT_URI=http://localhost/auth/x/callback/
+META_REDIRECT_URI=https://api.voicespark.ai/auth/fb/callback/
+INSTAGRAM_REDIRECT_URI=https://api.voicespark.ai/auth/fb/instagram/callback/
+LINKEDIN_REDIRECT_URI=https://api.voicespark.ai/auth/linkedin/callback/
+X_REDIRECT_URI=https://api.voicespark.ai/auth/x/callback/
+X_OAUTH1_CALLBACK=https://api.voicespark.ai/auth/x/callback/
 ```
-For production, replace `http://localhost` with your domain.
 
 </details>
 
@@ -498,17 +499,20 @@ Key production `.env` changes:
 ```env
 DEBUG=false
 SECRET_KEY=<generate-a-real-key>
-ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
-CORS_ALLOWED_ORIGINS=https://yourdomain.com
-BACKEND_URL=https://yourdomain.com
-VITE_BACKEND_SERVER=https://yourdomain.com/
-VITE_SCRAPER_BACKEND_SERVER=https://yourdomain.com/
+ALLOWED_HOSTS=api.voicespark.ai,voicespark.ai,www.voicespark.ai
+CORS_ALLOWED_ORIGINS=https://voicespark.ai,https://www.voicespark.ai,https://api.voicespark.ai
+CSRF_TRUSTED_ORIGINS=https://voicespark.ai,https://www.voicespark.ai,https://api.voicespark.ai
+BACKEND_URL=https://api.voicespark.ai
+PUBLIC_BACKEND_URL=https://api.voicespark.ai
+VITE_BACKEND_SERVER=https://api.voicespark.ai/
+VITE_SCRAPER_BACKEND_SERVER=https://api.voicespark.ai/
 
-# Update all OAuth redirect URIs to use your domain
-META_REDIRECT_URI=https://yourdomain.com/auth/fb/callback
-LINKEDIN_REDIRECT_URI=https://yourdomain.com/auth/linkedin/callback/
-X_REDIRECT_URI=https://yourdomain.com/auth/x/callback/
-X_OAUTH1_CALLBACK=https://yourdomain.com/auth/x/callback/
+# OAuth redirect URIs must match provider consoles exactly
+META_REDIRECT_URI=https://api.voicespark.ai/auth/fb/callback/
+INSTAGRAM_REDIRECT_URI=https://api.voicespark.ai/auth/fb/instagram/callback/
+LINKEDIN_REDIRECT_URI=https://api.voicespark.ai/auth/linkedin/callback/
+X_REDIRECT_URI=https://api.voicespark.ai/auth/x/callback/
+X_OAUTH1_CALLBACK=https://api.voicespark.ai/auth/x/callback/
 ```
 
 ```bash

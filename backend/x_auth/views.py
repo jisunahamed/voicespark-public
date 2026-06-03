@@ -33,7 +33,12 @@ logger = logging.getLogger(__name__)
 
 X_CLIENT_ID = os.getenv("X_CLIENT_ID")
 X_CLIENT_SECRET = os.getenv("X_CLIENT_SECRET")
-X_REDIRECT_URI = os.getenv("X_REDIRECT_URI")
+DEFAULT_BACKEND_URL = (
+    os.getenv("PUBLIC_BACKEND_URL")
+    or os.getenv("BACKEND_URL")
+    or "https://api.voicespark.ai"
+).rstrip("/")
+X_REDIRECT_URI = os.getenv("X_REDIRECT_URI") or os.getenv("X_OAUTH1_CALLBACK") or f"{DEFAULT_BACKEND_URL}/auth/x/callback/"
 X_AUTH_URL = "https://x.com/i/oauth2/authorize"
 X_TOKEN_URL = "https://api.x.com/2/oauth2/token"
 X_OAUTH_SCOPES = os.getenv("X_OAUTH_SCOPES", "tweet.read tweet.write users.read offline.access media.write")
