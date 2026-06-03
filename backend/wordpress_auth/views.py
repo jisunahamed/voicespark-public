@@ -1,4 +1,6 @@
 import os
+from io import BytesIO
+import zipfile
 from urllib.parse import urlparse, urlunparse
 from django.conf import settings
 from django.http import FileResponse, Http404
@@ -151,6 +153,19 @@ class DownloadPluginView(APIView):
             plugin_path = os.path.join(settings.BASE_DIR, 'voicespark.zip')
             if os.path.exists(plugin_path):
                 response = FileResponse(open(plugin_path, 'rb'), as_attachment=True, filename='voicespark.zip')
+                response['Cache-Control'] = 'no-store'
+                return response
+            source_dir = os.path.abspath(os.path.join(settings.BASE_DIR, '..', 'wordpress-plugin', 'voicespark'))
+            if os.path.isdir(source_dir):
+                buffer = BytesIO()
+                with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
+                    for root, _, files in os.walk(source_dir):
+                        for filename in files:
+                            full_path = os.path.join(root, filename)
+                            relative_path = os.path.relpath(full_path, os.path.dirname(source_dir))
+                            archive.write(full_path, relative_path)
+                buffer.seek(0)
+                response = FileResponse(buffer, as_attachment=True, filename='voicespark.zip')
                 response['Cache-Control'] = 'no-store'
                 return response
             raise Http404("Plugin file not found on server")

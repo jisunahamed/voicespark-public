@@ -88,7 +88,7 @@ chmod +x start.sh && ./start.sh
 | 📅 **Scheduling** | Queue and auto-publish posts at optimal times with Celery |
 | 🏢 **Multi-Workspace** | Manage multiple brands/clients from a single account |
 | 🖼️ **AI Image Generation** | NanoBanana integration for on-brand social media visuals |
-| 🔐 **OAuth Flows** | Full OAuth2/OAuth1 for Meta, LinkedIn, X, and WordPress |
+| 🔐 **Account Auth** | OAuth2/OAuth1 for Meta, LinkedIn, and X; application-password/plugin auth for WordPress |
 
 ---
 
@@ -250,6 +250,29 @@ X_OAUTH1_CALLBACK=https://api.voicespark.ai/auth/x/callback/
 ```
 
 App permissions required: Read and Write
+
+</details>
+
+<details>
+<summary><b>WordPress</b></summary>
+
+WordPress publishing uses the WordPress REST API. No redirect URL is required.
+
+Recommended setup:
+
+```text
+WordPress admin -> Users -> Profile -> Application Passwords
+```
+
+Create an application password for the WordPress user that should publish posts, then connect the site from VoiceSpark Integrations with:
+
+```env
+Site URL: https://your-wordpress-site.com/wp-admin
+Username: your WordPress username
+Password: generated application password
+```
+
+If application passwords are unavailable on the site, install the VoiceSpark plugin from the Integrations page. The backend download endpoint packages `wordpress-plugin/voicespark` as `voicespark.zip`.
 
 </details>
 
